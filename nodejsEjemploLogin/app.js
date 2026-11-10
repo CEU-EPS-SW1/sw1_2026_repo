@@ -10,6 +10,7 @@ const loginRouter = require('./routes/login');
 const restrictedRouter = require('./routes/restricted');
 
 let app = express();
+app.locals.title_global = "Nuestra Web";
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,10 +26,29 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+app.use((req, res, next) => {
+  if (req.session.message){
+    res.locals.message = req.session.message;
+  } else {
+    res.locals.message = "";
+  }
+  if (req.session.error){
+    res.locals.error = req.session.error;
+  } else {
+    res.locals.error = "";
+  }
+  delete req.session.message;
+  delete req.session.error;
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/restricted', checkLogin, restrictedRouter);
+app.use('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+});
 
 function checkLogin(req, res, next){
   console.log(req.session);

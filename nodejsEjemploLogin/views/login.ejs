@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>
-    <%= title %>
-  </title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-
-<body>
+<%- include("header", {}) %>
   <h1>
     <%= title %>
   </h1>
@@ -19,6 +9,4 @@
     <label for="pass">Password: </label><input type="password" name="pass" id="pass"><br>
     <button type="submit">Submit</button>
   </form>
-</body>
-
-</html>
+<%- include("footer", {}) %>

@@ -1,18 +1,34 @@
+const bcrypt = require('bcrypt');
+
 const users = {}
 
 users.data = {}
 
-users.register = function(username, password){
-    //TODO comprobar si existe el usuario
-    //TODO cifrar contraseña
-    users.data[username] = {username, password};
+users.generateHash = function(password, callback){
+    bcrypt.hash(password, 10, callback);
 }
 
-users.isLoginRight = function(username, password){
+users.comparePass = async function(password, hash){
+    return await bcrypt.compare(password, hash);
+}
+
+users.register = function(username, password){
+    if (users.data.hasOwnProperty(username)){
+        throw new Error('Ya existe el usuario ' + username);
+    }
+    users.generateHash(password, (err, hash) => {
+        if(err){
+            throw new Error('Error al generar el hash');
+        }
+        users.data[username] = {username, hash, last_Login: new Date().toISOString};
+    });
+}
+
+users.isLoginRight = async function(username, password){
     if (!users.data[username]){
         return false;
     }
-    return users.data[username].password == password;
+    return await users.comparePass(password, users.data[username].hash);
 }
 
 module.exports = users;

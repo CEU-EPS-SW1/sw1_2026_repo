@@ -4,16 +4,18 @@ const database = require('../database');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('login', { title: 'Login' });
+  res.render('login', { title: 'Login', user: req.session.user});
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', async function(req, res, next) {
   const username = req.body.user;
   const password = req.body.pass;
-  if (database.users.isLoginRight(username, password)){
+  if (await database.users.isLoginRight(username, password)){
     req.session.user = {username};
+    req.session.message = "¡Inicio de sesión correcto!";
     res.redirect('restricted');
   } else {
+    req.session.error = "¡Usuario o contraseña incorrectos!";
     res.redirect('login');
   }
 });
