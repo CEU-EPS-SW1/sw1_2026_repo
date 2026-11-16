@@ -12,7 +12,7 @@ form.addEventListener('submit', (e)=> {
     }
 });
 
-socket.on('chat', (msg) => {
+socket.on('chatRespuesta', (msg) => {
     console.log("Mensaje recibido");
     const item = document.createElement("li");
     item.textContent = msg;

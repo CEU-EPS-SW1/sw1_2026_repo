@@ -1,5 +1,5 @@
 {
-    "title": "Preguntas 2025",
+    "title": "Preguntas",
     "questions":[
         {
             "question": "Nuestra aplicación utiliza el estándar SemVer y actualmente estamos en la versión 2.1.3. ¿Cuál debería ser la siguiente versión de la aplicación si hemos añadido funcionalidad retrocompatible?",
